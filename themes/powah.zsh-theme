@@ -148,8 +148,8 @@ prompt_tasks() {
 ## Main prompt
 build_prompt() {
   prompt_context
-  prompt_dir
   prompt_git
+  prompt_dir
   prompt_end
 }
 
