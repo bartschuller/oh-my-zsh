@@ -123,24 +123,26 @@ prompt_status() {
 }
 
 prompt_tasks() {
-  local current urgent taskcolor
-  current=$(task rc.verbose=nothing rc.report.current.columns=id,description.truncated rc.report.current.filter='status:pending start.any: limit:1' rc.report.current.sort=start- current)
-  urgent=$(task rc.verbose=nothing rc.report.urgent.columns=id,description.truncated rc.report.urgent.filter='status:pending limit:1' rc.report.urgent.sort=urgency-,due+,priority-,start-,project+ urgent)
-  if [[ -n "$current" ]]; then
-    if [[ -n "$urgent" ]]; then
-      if [[ $current[(w)1] -ne $urgent[(w)1] ]]; then
-        taskcolor=yellow
-      else
-        taskcolor=green
+  if  command -v task >/dev/null; then
+    local current urgent taskcolor
+    current=$(task rc.verbose=nothing rc.report.current.columns=id,description.truncated rc.report.current.filter='status:pending start.any: limit:1' rc.report.current.sort=start- current)
+    urgent=$(task rc.verbose=nothing rc.report.urgent.columns=id,description.truncated rc.report.urgent.filter='status:pending limit:1' rc.report.urgent.sort=urgency-,due+,priority-,start-,project+ urgent)
+    if [[ -n "$current" ]]; then
+      if [[ -n "$urgent" ]]; then
+	if [[ $current[(w)1] -ne $urgent[(w)1] ]]; then
+	  taskcolor=yellow
+	else
+	  taskcolor=green
+	fi
       fi
-    fi
-    prompt_segment $taskcolor black "%16>…>$current[(w)1] $current[(w)2,-1]%>>"
-    if [[ $taskcolor = yellow ]]; then
-      prompt_segment red black "%16>…>$urgent[(w)1] $urgent[(w)2,-1]%>>"
-    fi
-  else
-    if [[ -n "$urgent" ]]; then
-      prompt_segment black yellow "%16>…>$urgent[(w)1] $urgent[(w)2,-1]%>>"
+      prompt_segment $taskcolor black "%16>…>$current[(w)1] $current[(w)2,-1]%>>"
+      if [[ $taskcolor = yellow ]]; then
+	prompt_segment red black "%16>…>$urgent[(w)1] $urgent[(w)2,-1]%>>"
+      fi
+    else
+      if [[ -n "$urgent" ]]; then
+	prompt_segment black yellow "%16>…>$urgent[(w)1] $urgent[(w)2,-1]%>>"
+      fi
     fi
   fi
 }
