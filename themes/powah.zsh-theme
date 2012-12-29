@@ -123,7 +123,7 @@ prompt_status() {
 }
 
 prompt_tasks() {
-  if  command -v task >/dev/null; then
+  if [[ $EUID -ne 0 ]] && command -v task >/dev/null; then
     local current urgent taskcolor
     current=$(task rc.verbose=nothing rc.report.current.columns=id,description.truncated rc.report.current.filter='status:pending start.any: limit:1' rc.report.current.sort=start- current)
     urgent=$(task rc.verbose=nothing rc.report.urgent.columns=id,description.truncated rc.report.urgent.filter='status:pending limit:1' rc.report.urgent.sort=urgency-,due+,priority-,start-,project+ urgent)
