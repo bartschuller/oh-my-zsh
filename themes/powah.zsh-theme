@@ -93,7 +93,7 @@ prompt_git() {
   if $(git rev-parse --is-inside-work-tree >/dev/null 2>&1); then
     dirty=$(ZSH_THEME_GIT_PROMPT_CLEAN="" ZSH_THEME_GIT_PROMPT_DIRTY=1 parse_git_dirty)
     ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git show-ref --head -s --abbrev |head -n1 2> /dev/null)"
-    prompt_segment black default "%{%F{magenta}%}⭠$(git_prompt_status)$(git_prompt_ahead)"
+    prompt_segment black default "%{%F{magenta}%}⭠$(git_prompt_status)"
     if [[ -n $dirty ]]; then
       prompt_segment yellow black
     else
